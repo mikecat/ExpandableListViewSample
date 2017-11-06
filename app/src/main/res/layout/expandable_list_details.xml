@@ -3,9 +3,17 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <FrameLayout
+        android:id="@+id/mapLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+    </FrameLayout>
+
     <TextView
         android:id="@+id/infoView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="" />
+
 </LinearLayout>

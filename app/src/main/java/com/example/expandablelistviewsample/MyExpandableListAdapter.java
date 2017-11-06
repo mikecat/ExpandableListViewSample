@@ -1,11 +1,17 @@
 package com.example.expandablelistviewsample;
 
-import android.content.Context;
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.MapFragment;
 
 import java.util.List;
 
@@ -14,14 +20,16 @@ import java.util.List;
  */
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private List<Item> itemList;
+    private Activity activity;
     private LayoutInflater li;
 
     /**
-     * コンテキスト(Activityとか)を指定して初期化する。
-     * @param context コンテキスト
+     * ExpandableListViewを乗せるActivityを指定して初期化する。
+     * @param activity ExpandableListViewを乗せるActivity
      */
-    public MyExpandableListAdapter(Context context) {
-        li = LayoutInflater.from(context);
+    public MyExpandableListAdapter(Activity activity) {
+        this.activity = activity;
+        li = LayoutInflater.from(activity);
     }
 
     /**
@@ -82,6 +90,13 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = li.inflate(R.layout.expandable_list_details, parent, false);
+            FrameLayout fl = (FrameLayout)convertView.findViewById(R.id.mapLayout);
+            //fl.setId(View.generateViewId());
+            FragmentManager fm = activity.getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            MapFragment mapFragment = new MapFragment();
+            ft.add(fl.getId(), mapFragment);
+            ft.commit();
         }
         Item item = itemList == null ? null : itemList.get(groupPosition);
         String itemInfo = item == null ? "" : item.getInfo();
